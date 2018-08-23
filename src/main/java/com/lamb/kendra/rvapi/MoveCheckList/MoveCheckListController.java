@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 public class MoveCheckListController {
 
+    //TODO: handle bad requests once View is up and running
     @Autowired
     private MoveCheckListService moveCheckListService;
 
