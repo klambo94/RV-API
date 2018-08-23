@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -16,8 +17,11 @@ public class MoveCheckListController {
     private MoveCheckListService moveCheckListService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/moveLocations")
-    public List<Item> getCheckList() {
-        return moveCheckListService.getAllItems();
+    public ModelAndView getCheckList() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("moveLocations");
+        modelAndView.addObject("items", moveCheckListService.getAllItems());
+        return modelAndView;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/moveLocations")

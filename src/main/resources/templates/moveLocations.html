@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="webjars/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <title>Moving Locations CheckList</title>
+</head>
+<body>
+    <table class="table">
+        <thead>
+            <th scope="col">Items That Need to Be doen</th>
+            <th scope="col">Completed Items</th>
+        </thead>
+        <tbody>
+            <!--/*@thymesVar id="items" type="java"*/-->
+            <tr th:each="item : ${items}">
+                <td>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <input type="checkbox" aria-label="item check box">
+                            </div>
+                        </div>
+                        <!--/*@thymesVar id="description" type="java"*/-->
+                        <input type="text" class="form-control" aria-label="default item text" th:value="${item.description}" >
+                    </div>
+                </td>
+                <td>
+                    <!--TODO: Use this col to place checked items. -->
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+</body>
+</html>
