@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "task")
-public class Item {
+public class Task {
 
 
     @Id
@@ -14,7 +14,7 @@ public class Item {
 
     private String description;
 
-    public Item() {
+    public Task() {
     }
 
     public Long getId() {
