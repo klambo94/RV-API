@@ -12,25 +12,25 @@ public class MoveCheckListService {
     @Autowired
     private MoveCheckListRepository moveCheckListRepository;
 
-    public List<Item> getAllItems() {
-        List<Item> items = new ArrayList<>();
-        moveCheckListRepository.findAll().forEach(items::add);
-        return items;
+    public List<Task> getTasks() {
+        List<Task> tasks = new ArrayList<>();
+        moveCheckListRepository.findAll().forEach(tasks::add);
+        return tasks;
     }
 
-    public Item findItemById(Long taskId) {
+    public Task findTaskById(Long taskId) {
         return moveCheckListRepository.findById(taskId).orElse(null);
     }
 
-    public void addItem(Item item) {
-        moveCheckListRepository.save(item);
+    public void addTask(Task task) {
+        moveCheckListRepository.save(task);
     }
 
-    public void updateItem(Item item) {
-        moveCheckListRepository.save(item);
+    public void updateTask(Task task) {
+        moveCheckListRepository.save(task);
     }
 
-    public void deleteItem(Long id) {
+    public void deleteTask(Long id) {
         moveCheckListRepository.deleteById(id);
     }
 }

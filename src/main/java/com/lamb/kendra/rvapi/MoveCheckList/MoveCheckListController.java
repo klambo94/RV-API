@@ -1,7 +1,6 @@
 package com.lamb.kendra.rvapi.MoveCheckList;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -17,32 +16,32 @@ public class MoveCheckListController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/moveLocations")
     public ModelAndView getCheckList() {
-        List<Item> items = new ArrayList<>();
-        moveCheckListService.getAllItems().forEach(items::add);
+        List<Task> tasks = new ArrayList<>();
+        moveCheckListService.getTasks().forEach(tasks::add);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("moveLocations");
-        modelAndView.addObject("items", items);
+        modelAndView.addObject("tasks", tasks);
         return modelAndView;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/moveLocations/addItem")
-    public ModelAndView addItemToList(@RequestParam String description) {
+    @RequestMapping(method = RequestMethod.POST, value = "/moveLocations/addTask")
+    public ModelAndView addTask(@RequestParam String description) {
 
         ModelAndView modelAndView = new ModelAndView();
-        Item item = new Item();
-        item.setDescription(description);
-        moveCheckListService.addItem(item);
+        Task task = new Task();
+        task.setDescription(description);
+        moveCheckListService.addTask(task);
         modelAndView.setViewName("redirect:/moveLocations");
 
         return modelAndView;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/moveLocations/editItem")
-    public ModelAndView editItem(@RequestParam Long taskId, @RequestParam String description) {
-        Item item = moveCheckListService.findItemById(taskId);
-        if(item != null) {
-            item.setDescription(description);
-            moveCheckListService.updateItem(item);
+    @RequestMapping(method = RequestMethod.POST, value = "/moveLocations/editTask")
+    public ModelAndView editTask(@RequestParam Long taskId, @RequestParam String description) {
+        Task task = moveCheckListService.findTaskById(taskId);
+        if(task != null) {
+            task.setDescription(description);
+            moveCheckListService.updateTask(task);
         }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/moveLocations");
@@ -50,9 +49,9 @@ public class MoveCheckListController {
         return modelAndView;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/moveLocations/deleteItem")
-    public ModelAndView deleteItem(@RequestParam Long taskId) {
-        moveCheckListService.deleteItem(taskId);
+    @RequestMapping(method = RequestMethod.POST, value = "/moveLocations/deleteTask")
+    public ModelAndView deleteTask(@RequestParam Long taskId) {
+        moveCheckListService.deleteTask(taskId);
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/moveLocations");

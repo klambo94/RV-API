@@ -43,9 +43,9 @@ public class MoveCheckListControllerTest {
     private MoveCheckListRepository moveCheckListRepository;
 
 
-    private Item antenna = new Item();
-    private Item fridge = new Item();
-    private Item shower = new Item();
+    private Task antenna = new Task();
+    private Task fridge = new Task();
+    private Task shower = new Task();
 
     private String uri = "/moveLocations";
 
@@ -101,15 +101,15 @@ public class MoveCheckListControllerTest {
 
     @Test
     public void testAddMultipleItemsToCheckList() throws Exception {
-        List<Item> items = new ArrayList<>();
-        items.add(fridge);
-        items.add(antenna);
-        items.add(shower);
+        List<Task> tasks = new ArrayList<>();
+        tasks.add(fridge);
+        tasks.add(antenna);
+        tasks.add(shower);
 
-        items.forEach(item -> {
+        tasks.forEach(task -> {
             try {
                 mockMvc.perform(post(uri)
-                        .content(this.json(item))
+                        .content(this.json(task))
                         .contentType(contentType))
                         .andExpect(status().isOk());
             } catch (Exception e) {
