@@ -32,12 +32,12 @@
                         <td colspan="2">
                             <div class="input-group mb-3">
                                 <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editItemModalCenter">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" th:attr="data-target='#editItemModalCenter'+ ${item.getId()}">
                                     Edit Item
                                 </button>
 
                                 <!-- Modal -->
-                                <div class="modal fade" id="editItemModalCenter" tabindex="-1" role="dialog" aria-labelledby="editItemModalCenterTitle" aria-hidden="true">
+                                <div class="modal fade" th:id="|editItemModalCenter${item.getId()}|" tabindex="-1" role="dialog" aria-labelledby="editItemModalCenterTitle" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -50,7 +50,7 @@
                                                 <div class="modal-body">
                                                     <div class="form-group">
                                                         <input type="text" class="form-control" name="taskId" th:value="${item.getId()}" hidden="true">
-                                                        <input type="text" class="form-control" name="description" th:placeholder="${item.getDescription()}" required/>
+                                                        <input type="text" class="form-control" name="description" th:value="${item.getDescription()}" required/>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
