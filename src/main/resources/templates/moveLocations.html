@@ -49,10 +49,8 @@
                                             <form class="needs-validation" action="/moveLocations/editItem" method="post">
                                                 <div class="modal-body">
                                                     <div class="form-group">
-                                                        <label for="name" hidden="true"></label>
-                                                        <input type="text" class="form-control" id="name" name="name" th:value="${item.getName()}" hidden="true">
-                                                        <label for="description">Item Description</label>
-                                                        <input type="text" class="form-control" id="description" name="description" th:placeholder="${item.getDescription()}" required/>
+                                                        <input type="text" class="form-control" name="taskId" th:value="${item.getId()}" hidden="true">
+                                                        <input type="text" class="form-control" name="description" th:placeholder="${item.getDescription()}" required/>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
@@ -68,8 +66,7 @@
                         <td colspan="3">
                             <div class="input-group mb-3">
                                 <form class="deleteItemForm" action="/moveLocations/deleteItem" method="post">
-                                    <label for="name" hidden="true"></label>
-                                    <input type="hidden" id="name" name="name" th:value="${item.getName()}"/>
+                                    <input type="hidden" name="taskId" th:value="${item.getId()}"/>
                                     <button type="submit" class="btn btn-danger">Delete Item</button>
                                 </form>
                             </div>
@@ -80,8 +77,6 @@
 
                 <form class="needs-validation col-4" action="/moveLocations/addItem" method="post">
                     <div class="form-group">
-                        <label for="name">Item Name</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="e.g. jacks" required/>
                         <label for="description">Item Description</label>
                         <input type="text" class="form-control" id="description" name="description" placeholder="e.g. jacks are up" required/>
                     </div>

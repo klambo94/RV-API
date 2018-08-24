@@ -1,29 +1,28 @@
 package com.lamb.kendra.rvapi.MoveCheckList;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "task")
 public class Item {
 
+
     @Id
-    private String name;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name ="task_id")
+    private Long id;
+
     private String description;
 
     public Item() {
     }
 
-    public Item(String name, String description) {
-        this.name = name;
-        this.description = description;
+    public Long getId() {
+        return id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDescription() {
