@@ -1,11 +1,7 @@
 package com.lamb.kendra.rvapi.MoveCheckList;
 
-import io.swagger.models.Model;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.Logger;
-import org.hibernate.validator.constraints.pl.REGON;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -30,11 +26,10 @@ public class MoveCheckListController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/moveLocations/addItem")
-    public ModelAndView addItemToList(@RequestParam String name, @RequestParam String description) {
+    public ModelAndView addItemToList(@RequestParam String description) {
 
         ModelAndView modelAndView = new ModelAndView();
         Item item = new Item();
-        item.setName(name);
         item.setDescription(description);
         moveCheckListService.addItem(item);
         modelAndView.setViewName("redirect:/moveLocations");
@@ -43,8 +38,12 @@ public class MoveCheckListController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/moveLocations/editItem")
-    public ModelAndView editItem(@RequestBody Item item, @RequestParam String name, @RequestParam String description) {
-        moveCheckListService.updateItem(item);
+    public ModelAndView editItem(@RequestParam Long taskId, @RequestParam String description) {
+        Item item = moveCheckListService.findItemById(taskId);
+        if(item != null) {
+            item.setDescription(description);
+            moveCheckListService.updateItem(item);
+        }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/moveLocations");
 
@@ -52,8 +51,8 @@ public class MoveCheckListController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/moveLocations/deleteItem")
-    public ModelAndView deleteItem(@RequestParam String name) {
-        moveCheckListService.deleteItem(name);
+    public ModelAndView deleteItem(@RequestParam Long taskId) {
+        moveCheckListService.deleteItem(taskId);
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/moveLocations");

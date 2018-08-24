@@ -18,6 +18,10 @@ public class MoveCheckListService {
         return items;
     }
 
+    public Item findItemById(Long taskId) {
+        return moveCheckListRepository.findById(taskId).orElse(null);
+    }
+
     public void addItem(Item item) {
         moveCheckListRepository.save(item);
     }
@@ -26,7 +30,7 @@ public class MoveCheckListService {
         moveCheckListRepository.save(item);
     }
 
-    public void deleteItem(String name) {
-        moveCheckListRepository.deleteById(name);
+    public void deleteItem(Long id) {
+        moveCheckListRepository.deleteById(id);
     }
 }

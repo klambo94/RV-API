@@ -43,9 +43,9 @@ public class MoveCheckListControllerTest {
     private MoveCheckListRepository moveCheckListRepository;
 
 
-    private Item antenna = new Item("Antenna", "Antenna is down");
-    private Item fridge = new Item("Fridge", "Fridge doors are locked");
-    private Item shower = new Item("Shower", "Shower slides are locked");
+    private Item antenna = new Item();
+    private Item fridge = new Item();
+    private Item shower = new Item();
 
     private String uri = "/moveLocations";
 
@@ -65,6 +65,9 @@ public class MoveCheckListControllerTest {
     @Before
     public void setUp() throws Exception {
         moveCheckListRepository.deleteAll();
+        shower.setDescription("Shower doors are locked");
+        antenna.setDescription("Antenna is down");
+        fridge.setDescription("Fridge doors are locked");
     }
 
     @Test
@@ -92,7 +95,7 @@ public class MoveCheckListControllerTest {
         mockMvc.perform(get(uri))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$[0].name", is(antenna.getName())))
+                .andExpect(jsonPath("$[0].name", is(antenna.getId())))
                 .andExpect(jsonPath("$[0].description", is(antenna.getDescription())));
     }
 
@@ -118,11 +121,11 @@ public class MoveCheckListControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$", hasSize(3)))
-                .andExpect(jsonPath("$[0].name", is(fridge.getName())))
+                .andExpect(jsonPath("$[0].name", is(fridge.getId())))
                 .andExpect(jsonPath("$[0].description", is(fridge.getDescription())))
-                .andExpect(jsonPath("$[1].name", is(antenna.getName())))
+                .andExpect(jsonPath("$[1].name", is(antenna.getId())))
                 .andExpect(jsonPath("$[1].description", is(antenna.getDescription())))
-                .andExpect(jsonPath("$[2].name", is(shower.getName())))
+                .andExpect(jsonPath("$[2].name", is(shower.getId())))
                 .andExpect(jsonPath("$[2].description", is(shower.getDescription())));
 
     }
@@ -134,8 +137,9 @@ public class MoveCheckListControllerTest {
                         .contentType(contentType))
                 .andExpect(status().isOk());
 
+        antenna.setDescription(shower.getDescription());
         mockMvc.perform(put(uri)
-                        .content(this.json(new Item(antenna.getName(), shower.getDescription())))
+                        .content(this.json(antenna))
                         .contentType(contentType))
                 .andExpect(status().isOk());
 
@@ -143,7 +147,7 @@ public class MoveCheckListControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].name", is(antenna.getName())))
+                .andExpect(jsonPath("$[0].name", is(antenna.getId())))
                 .andExpect(jsonPath("$[0].description", is(shower.getDescription())));
 
     }
@@ -159,11 +163,11 @@ public class MoveCheckListControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].name", is(antenna.getName())));
+                .andExpect(jsonPath("$[0].name", is(antenna.getId())));
 
         mockMvc.perform(delete(uri)
                         .contentType(contentType)
-                        .content(antenna.getName()))
+                        .content(String.valueOf(antenna.getId())))
                 .andExpect(status().isOk());
 
         mockMvc.perform(get(uri))

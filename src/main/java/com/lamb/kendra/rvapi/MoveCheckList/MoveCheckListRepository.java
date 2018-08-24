@@ -1,6 +1,6 @@
 package com.lamb.kendra.rvapi.MoveCheckList;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface MoveCheckListRepository extends CrudRepository<Item, String> {
+public interface MoveCheckListRepository extends JpaRepository<Item, Long> {
 }
