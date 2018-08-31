@@ -1,10 +1,13 @@
 package com.lamb.kendra.rvapi.MoveCheckList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -19,6 +22,7 @@ public class MoveCheckListController {
         List<Task> tasks = new ArrayList<>();
         moveCheckListService.getTasks().forEach(tasks::add);
         ModelAndView modelAndView = new ModelAndView();
+        tasks.sort(Comparator.comparing(Task::getDescription));
         modelAndView.setViewName("moveLocations");
         modelAndView.addObject("tasks", tasks);
         return modelAndView;
@@ -48,6 +52,23 @@ public class MoveCheckListController {
 
         return modelAndView;
     }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/moveLocations/editCompleteStatus")
+    public ModelAndView editCompleteStatus(@RequestBody Task reqTask) {
+        ModelAndView modelAndView = new ModelAndView();
+        if(reqTask != null && reqTask.getId() != null) {
+            Long taskId = reqTask.getId();
+            boolean isCompleted = reqTask.isCompleted();
+            Task task = moveCheckListService.findTaskById(taskId);
+            if (task != null) {
+                task.setCompleted(isCompleted);
+                moveCheckListService.updateTask(task);
+                modelAndView.setViewName("redirect:/moveLocations");
+            }
+        }
+        return modelAndView;
+    }
+
 
     @RequestMapping(method = RequestMethod.POST, value = "/moveLocations/deleteTask")
     public ModelAndView deleteTask(@RequestParam Long taskId) {
