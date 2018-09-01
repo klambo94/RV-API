@@ -16,7 +16,7 @@ public class Task {
 
     private String description;
 
-    @JsonProperty("isCompleted")
+    @JsonProperty
     private boolean isCompleted;
 
     private int orderNum;
