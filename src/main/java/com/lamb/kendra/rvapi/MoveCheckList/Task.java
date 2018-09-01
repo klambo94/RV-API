@@ -19,6 +19,8 @@ public class Task {
     @JsonProperty
     private boolean isCompleted;
 
+    private int orderNum;
+
     public Task() {
         this.isCompleted = false;
     }
@@ -45,5 +47,13 @@ public class Task {
 
     public void setCompleted(boolean completed) {
         isCompleted = completed;
+    }
+
+    public int getOrderNum() {
+        return orderNum;
+    }
+
+    public void setOrderNum(int orderNum) {
+        this.orderNum = orderNum;
     }
 }

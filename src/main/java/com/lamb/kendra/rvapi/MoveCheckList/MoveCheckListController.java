@@ -1,8 +1,6 @@
 package com.lamb.kendra.rvapi.MoveCheckList;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -13,16 +11,14 @@ import java.util.List;
 @RestController
 public class MoveCheckListController {
 
-    //TODO: handle bad requests once View is up and running
     @Autowired
     private MoveCheckListService moveCheckListService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/moveLocations")
     public ModelAndView getCheckList() {
-        List<Task> tasks = new ArrayList<>();
-        moveCheckListService.getTasks().forEach(tasks::add);
+        List<Task> tasks = getTasksInOrder();
+
         ModelAndView modelAndView = new ModelAndView();
-        tasks.sort(Comparator.comparing(Task::getDescription));
         modelAndView.setViewName("moveLocations");
         modelAndView.addObject("tasks", tasks);
         return modelAndView;
@@ -30,10 +26,22 @@ public class MoveCheckListController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/moveLocations/addTask")
     public ModelAndView addTask(@RequestParam String description) {
-
         ModelAndView modelAndView = new ModelAndView();
         Task task = new Task();
+        //Add to the end of the list
+        List<Task> tasks = getTasksInOrder();
+        int taskSize = tasks.size();
+
+        int orderNum;
+        if(taskSize == 0) {
+            orderNum = taskSize;
+        } else {
+            Task lastTask = tasks.get(taskSize - 1);
+            orderNum = lastTask.getOrderNum() + 1;
+        }
+        task.setOrderNum(orderNum);
         task.setDescription(description);
+
         moveCheckListService.addTask(task);
         modelAndView.setViewName("redirect:/moveLocations");
 
@@ -50,6 +58,23 @@ public class MoveCheckListController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/moveLocations");
 
+        return modelAndView;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value ="/moveLocations/updateTaskOrder")
+    public ModelAndView updateTaskOrder(@RequestBody List<Task> tasks) {
+        ModelAndView modelAndView = new ModelAndView();
+        List<Task> db_tasks = getTasksInOrder();
+        for(Task reqTask : tasks) {
+            Task matchingDbTask = db_tasks.stream().filter(task -> task.getId().compareTo(reqTask.getId()) == 0).findFirst().orElse(null);
+
+            if(matchingDbTask != null) {
+                matchingDbTask.setOrderNum(reqTask.getOrderNum());
+                moveCheckListService.updateTask(matchingDbTask);
+            }
+        }
+
+        modelAndView.setViewName("redirect:/moveLocations");
         return modelAndView;
     }
 
@@ -73,9 +98,27 @@ public class MoveCheckListController {
     @RequestMapping(method = RequestMethod.POST, value = "/moveLocations/deleteTask")
     public ModelAndView deleteTask(@RequestParam Long taskId) {
         moveCheckListService.deleteTask(taskId);
+        resetTaskOrderNums();
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/moveLocations");
         return modelAndView;
+    }
+
+    private List<Task> getTasksInOrder() {
+        List<Task> tasks = new ArrayList<>();
+        moveCheckListService.getTasks().forEach(tasks::add);
+        tasks.sort(Comparator.comparing(Task::getOrderNum));
+        return tasks;
+    }
+
+    private void resetTaskOrderNums() {
+        List<Task> tasks = getTasksInOrder();
+
+        for(int i = 0; i < tasks.size(); i++) {
+            Task task = tasks.get(i);
+            task.setOrderNum(i);
+            moveCheckListService.updateTask(task);
+        }
     }
 }
