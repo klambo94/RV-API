@@ -7,30 +7,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class MoveCheckListService {
+public class TaskService {
 
     @Autowired
-    private MoveCheckListRepository moveCheckListRepository;
+    private TaskRepository taskRepository;
 
     public List<Task> getTasks() {
         List<Task> tasks = new ArrayList<>();
-        moveCheckListRepository.findAll().forEach(tasks::add);
+        taskRepository.findAll().forEach(tasks::add);
         return tasks;
     }
 
     public Task findTaskById(Long taskId) {
-        return moveCheckListRepository.findById(taskId).orElse(null);
+        return taskRepository.findById(taskId).orElse(null);
     }
 
     public void addTask(Task task) {
-        moveCheckListRepository.save(task);
+        taskRepository.save(task);
     }
 
     public void updateTask(Task task) {
-        moveCheckListRepository.save(task);
+        taskRepository.save(task);
     }
 
     public void deleteTask(Long id) {
-        moveCheckListRepository.deleteById(id);
+        taskRepository.deleteById(id);
     }
 }

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{home.html}"
+      lang="en">
+<head>
+    <title>Edit Task</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <script type="text/javascript"  th:src="@{/js/movelocations.js}"></script>
+</head>
+<body>
+<section layout:fragment="content">
+    <form class="col-md-9" action="/moveLocations/editTask" method="post">
+        <div class="form-group">
+            <label for="taskNameInput">Task Name</label>
+            <input type="hidden" name="taskId" th:value="${task.getId()}">
+            <input type="text" class="form-control" id="taskNameInput" name="description" th:value="${task.getDescription()}">
+        </div>
+        <div class="form-group">
+            <label for="taskNotesInput">Notes</label>
+            <textarea type="text" class="form-control" id="taskNotesInput" name="notes" th:text="${task.getNotes()}"></textarea>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-success">Save</button>
+        </div>
+    </form>
+    <div class="col-md-9">
+        <ul class="list-inline">
+            <li th:each="category : ${task.getCategories()}">
+                <form action="/moveLocations/deleteCategory" method="post" th:name="${category.getCategoryName()}">
+                     <input type="hidden" name="categoryId" th:value="|${category.getId()}|"/>
+                     <input type="hidden" name="taskId" th:value="|${task.getId()}|"/>
+                     <span class="badge badge-info">
+                        <span th:text="${category.getCategoryName()}"></span>
+                        <a class="badge badge-danger" th:onclick="|${category.getCategoryName()}.submit();|" methods="post"><i class="fas fa-times"></i></a>
+                     </span>
+                </form>
+            </li>
+        </ul>
+    </div>
+    <form class="col-md-9" action="/moveLocations/addCategory" method="POST">
+        <input class="form-group" id="addCategory" name="categoryName" required>
+        <input name="taskId" th:value="${task.getId()}" type="hidden">
+        <button type="submit" id="addCatBtn" class="form-select-button btn-primary btn-sm" >Add Category</button>
+    </form>
+</section>
+</body>
+</html>

@@ -40,7 +40,7 @@ public class MoveCheckListControllerTest {
     private HttpMessageConverter mappingJackson2HttpMessageConverter;
 
     @Autowired
-    private MoveCheckListRepository moveCheckListRepository;
+    private TaskRepository taskRepository;
 
 
     private Task antenna = new Task();
@@ -64,7 +64,7 @@ public class MoveCheckListControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        moveCheckListRepository.deleteAll();
+        taskRepository.deleteAll();
         shower.setDescription("Shower doors are locked");
         antenna.setDescription("Antenna is down");
         fridge.setDescription("Fridge doors are locked");

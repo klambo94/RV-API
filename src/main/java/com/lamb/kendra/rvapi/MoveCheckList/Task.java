@@ -3,6 +3,10 @@ package com.lamb.kendra.rvapi.MoveCheckList;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "task")
@@ -21,8 +25,19 @@ public class Task {
 
     private int orderNum;
 
+    private String notes;
+
+    @ManyToMany(cascade = {CascadeType.ALL})
+            @JoinTable(
+                    name="task_categories",
+                    joinColumns = {@JoinColumn(name="task_id")},
+                    inverseJoinColumns = {@JoinColumn(name="category_id")}
+            )
+    Set<Category> categories;
+
     public Task() {
         this.isCompleted = false;
+        categories = new HashSet<>();
     }
 
     public Long getId() {
@@ -55,5 +70,23 @@ public class Task {
 
     public void setOrderNum(int orderNum) {
         this.orderNum = orderNum;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public Task setNotes(String notes) {
+        this.notes = notes;
+        return this;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public Task setCategories(Set<Category> categories) {
+        this.categories = categories;
+        return this;
     }
 }
